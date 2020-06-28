@@ -97,17 +97,12 @@ module.exports = {
             },
             // css编码与提取
             {
-                test: /\.css$/,
+                test: /\.(sa|sc|c)ss$/,
                 use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            // 这里可以指定一个 publicPath
-                            // 默认使用 webpackOptions.output中的publicPath
-                            //publicPath: '../'
-                        },
-                    },
+                    MiniCssExtractPlugin.loader,
                     'css-loader',
+                    'sass-loader',
+                    'postcss-loader',
                 ],
             },
             // 图片内联与编码
