@@ -69,9 +69,18 @@ module.exports = {
         publicPath: '/' //资源的基础路径，设置什么值就会在原来的路径前面加上这个值
     },
     plugins: plugins,
+    resolve: {
+        extensions: [  '.ts', '.js' ]
+    },
     // 模块配置
     module: {
+
         rules: [
+            {
+                test: /\.ts?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
+            },
             // es6语法转换
             {
                 test: /\.js$/,
