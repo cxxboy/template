@@ -2,7 +2,8 @@ const path = require("path"); // 处理文件路径的标准库
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');// CSS提取插件
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // HTML生成插件
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");//自动清理
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");//自动清理
+const JavaScriptObfuscator = require('webpack-obfuscator'); //加密代码
 const glob = require('glob'); // HTML生成插件
 
 // 设置html-webpack-plugin参数，返回参数对象
@@ -19,7 +20,7 @@ let getHtmlConfig = function (name, chunks) {
         // favicon: './favicon.ico',
         // title: title,
         inject: true, //设置为true插入的元素放入body元素的底部
-        hash: true, //开启hash  ?[hash]
+        hash: false, //开启hash  ?[hash]
         chunks: chunks,
         minify: process.env.NODE_ENV === "development" ? false : {
             removeComments: true, //移除HTML中的注释
@@ -31,8 +32,6 @@ let getHtmlConfig = function (name, chunks) {
 };
 
 var plugins = [];
-
-
 
 //加入其它plugin
 plugins.push(
@@ -51,6 +50,34 @@ plugins.push(
 
     })
 )
+
+//生产环境加密js代码
+if (process.env.NODE_ENV === "production") {
+    console.log("打包生产环境,加密js代码!")
+    plugins.push(
+        new JavaScriptObfuscator({
+            compact: true,//压缩代码
+            controlFlowFlattening: true, //是否启用控制流扁平化(降低1.5倍的运行速度)
+            controlFlowFlatteningThreshold: 0.75,//应用概率;在较大的代码库中，建议降低此值，因为大量的控制流转换可能会增加代码的大小并降低代码的速度。
+            deadCodeInjection: true,//随机的死代码块(增加了混淆代码的大小)
+            deadCodeInjectionThreshold: 0.4,//死代码块的影响概率
+            debugProtection: false,//此选项几乎不可能使用开发者工具的控制台选项卡
+            debugProtectionInterval: false,//如果选中，则会在“控制台”选项卡上使用间隔强制调试模式，从而更难使用“开发人员工具”的其他功能。
+            disableConsoleOutput: true,//通过用空函数替换它们来禁用console.log，console.info，console.error和console.warn。这使得调试器的使用更加困难。
+            identifierNamesGenerator: 'hexadecimal',//标识符的混淆方式 hexadecimal(十六进制) mangled(短标识符)
+            log: false,
+            renameGlobals: false,//是否启用全局变量和函数名称的混淆
+            rotateStringArray: true,//通过固定和随机（在代码混淆时生成）的位置移动数组。这使得将删除的字符串的顺序与其原始位置相匹配变得更加困难。如果原始源代码不小，建议使用此选项，因为辅助函数可以引起注意。
+            selfDefending: true,//混淆后的代码,不能使用代码美化,同时需要配置 cpmpat:true;
+            stringArray: true,//删除字符串文字并将它们放在一个特殊的数组中
+            stringArrayEncoding: 'base64',
+            stringArrayThreshold: 0.75,
+            transformObjectKeys: true,
+            unicodeEscapeSequence: false//允许启用/禁用字符串转换为unicode转义序列。Unicode转义序列大大增加了代码大小，并且可以轻松地将字符串恢复为原始视图。建议仅对小型源代码启用此选项。
+        }, []),
+    )
+}
+
 // webpack.config.js模块导出的所有符号（webpack配置信息）
 // 参考：https://webpack.js.org/configuration/
 module.exports = {
@@ -59,7 +86,7 @@ module.exports = {
         entrypoints: false,
         children: false
     },
-    devtool:process.env.NODE_ENV === "development" ?'cheap-module-eval-source-map':'cheap-module-source-map',
+    devtool: process.env.NODE_ENV === "development" ? 'cheap-module-eval-source-map' : 'cheap-module-source-map',
     // 应用入口
     entry: getEntry(),
     // 编译输出配置
@@ -70,7 +97,7 @@ module.exports = {
     },
     plugins: plugins,
     resolve: {
-        extensions: [  '.ts', '.js' ]
+        extensions: ['.ts', '.js']
     },
     // 模块配置
     module: {
@@ -131,7 +158,7 @@ module.exports = {
         hints: "warning", // 枚举
         maxAssetSize: 30000000, // 整数类型（以字节为单位）
         maxEntrypointSize: 50000000, // 整数类型（以字节为单位）
-        assetFilter: function(assetFilename) {
+        assetFilter: function (assetFilename) {
             // 提供资源文件名的断言函数
             return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
         }
@@ -163,10 +190,10 @@ module.exports = {
 
     // 测试服务器配置
     devServer: {
-        host:'127.0.0.1',
+        host: '127.0.0.1',
         port: 8080,             // 监听端口
-      //  compress: true,         // gzip压缩
-      //  hot:true
+        //  compress: true,         // gzip压缩
+        //  hot:true
     },
 };
 
@@ -188,7 +215,6 @@ module.exports = {
         plugins.push(new HtmlWebpackPlugin(getHtmlConfig(element.html, element.chunks)));
     });
 })();
-
 
 
 //读取所有.js文件,动态设置多入口
