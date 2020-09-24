@@ -40,8 +40,8 @@ plugins.push(
     //css加载
     new MiniCssExtractPlugin({
         // 类似 webpackOptions.output里面的配置 可以忽略
-        filename: 'assets/css/[name].[hash:4].css',
-        chunkFilename: 'assets/css/[id].[hash:4].css',
+        filename: 'assets/css/[name]-[hash:4].css',
+        chunkFilename: 'assets/css/[id]-[hash:4].css',
     }),
     // 自动加载类库
     //webpack配置ProvidePlugin后，在使用时将不再需要import和require进行引入，直接使用即可。
@@ -92,7 +92,7 @@ module.exports = {
     // 编译输出配置
     output: {
         path: path.resolve(__dirname, 'dist'),          // 保存路径
-        filename: 'assets/js/[name].[hash:4].js',    // js文件名
+        filename: 'assets/js/[name]-[hash:4].js',    // js文件名
         publicPath: '/' //资源的基础路径，设置什么值就会在原来的路径前面加上这个值
     },
     plugins: plugins,
@@ -135,24 +135,25 @@ module.exports = {
             // 图片内联与编码
             {
                 // 小于1KB的图片使用base64内联
-                test: /\.(png|jpg|etc|svg)$/,
+                test: /\.(png|jpg|webp)$/,
                 use: [{
                     loader: "url-loader", // or url-loader
                     options: {
                         limit: 20480,
-                        name: "assets/image/[name].[hash:4].[ext]",
+                        name: "assets/images/[name]-[hash:4].[ext]",
                         esModule: false,
                     }
                 }],
-                // use: [
-                //     {
-                //       loader: 'url-loader',
-                //       options: {
-                //         limit: 1024,
-                //         name:"assets/image/[name].[hash:4].[ext]"
-                //       }
-                //     }
-                //   ]
+            },
+            {
+                // 字体文件
+                test: /\.(ttf|eot|woff|woff2|svg)$/,
+                use: [{
+                    loader: "file-loader", // or url-loader
+                    options: {
+                        name: "assets/fonts/[name]-[hash:4].[ext]",
+                    }
+                }],
             },
             // 提取html中直接引用的本地文件
             /* {

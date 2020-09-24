@@ -14,6 +14,9 @@ import "./index.scss"
        mounted () {
            //激活粒子效果
            cxxboy_canvas_background('cxxboy-canvas-bg')
+       },
+       methods:{
+
        }
    })
 })()
