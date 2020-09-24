@@ -41,8 +41,8 @@ plugins.push(
     //css加载
     new MiniCssExtractPlugin({
         // 类似 webpackOptions.output里面的配置 可以忽略
-        filename: 'assets/css/[name].[hash:8].css',
-        chunkFilename: 'assets/css/[id].[hash:8].css',
+        filename: 'assets/css/[name].[hash:4].css',
+        chunkFilename: 'assets/css/[id].[hash:4].css',
     }),
     // 自动加载类库
     new webpack.ProvidePlugin({
@@ -59,13 +59,13 @@ module.exports = {
         entrypoints: false,
         children: false
     },
-    devtool:'inline-source-map',
+    devtool:process.env.NODE_ENV === "development" ?'cheap-module-eval-source-map':'cheap-module-source-map',
     // 应用入口
     entry: getEntry(),
     // 编译输出配置
     output: {
         path: path.resolve(__dirname, 'dist'),          // 保存路径
-        filename: 'assets/js/[name].[hash:8].js',    // js文件名
+        filename: 'assets/js/[name].[hash:4].js',    // js文件名
         publicPath: '/' //资源的基础路径，设置什么值就会在原来的路径前面加上这个值
     },
     plugins: plugins,
@@ -109,7 +109,7 @@ module.exports = {
             {
                 // 小于1KB的图片使用base64内联
                 test: /\.(png|jpg|gif|svg)$/,
-                loader: 'url-loader?limit=1024&name=assets/image/[name].[hash:8].[ext]' // 图片提取到images目录
+                loader: 'url-loader?limit=1024&name=assets/image/[name].[hash:4].[ext]' // 图片提取到images目录
                 // use: [
                 //     {
                 //       loader: 'url-loader',
@@ -134,7 +134,6 @@ module.exports = {
         assetFilter: function(assetFilename) {
             // 提供资源文件名的断言函数
             return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
-
         }
     },
     // 提取公共代码
