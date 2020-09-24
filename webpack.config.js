@@ -117,8 +117,8 @@ module.exports = {
                     cacheDirectory: true,
                     presets: ['@babel/preset-env'],
                     plugins: [
-                        ["transform-object-rest-spread"],
-                        ["@babel/plugin-transform-runtime"]
+                        ["@babel/plugin-transform-runtime"],
+                        ["@babel/plugin-proposal-object-rest-spread"]
                     ]
                 }
             },
@@ -175,9 +175,9 @@ module.exports = {
     },
     // 提取公共代码
     optimization: {
-        runtimeChunk: {
+/*        runtimeChunk: {
             name: 'manifest'
-        },
+        },*/
         minimizer: [],// [new UglifyJsPlugin({...})]
         splitChunks: {
             cacheGroups: {
