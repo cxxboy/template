@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "particles.js": "^2.0.0",
-    "jquery": "2.2.4",
+    "vue": "^2.6.12",
     "@primer/css": "15.2.0"
   }
 }

@@ -1,19 +1,27 @@
-import $ from 'jquery/dist/jquery.min'
+import Vue from "vue/dist/vue.min";
 import {log} from "../../../common/js/util"
 import "particles.js/particles"
 
 import "../../../common/css/reset.scss"
 import "./index.scss"
 
-$(function () {
-    $("#cxxboy-auth-login-btn").click(function () {
-        $(".cxxboy-auth .note").removeClass("v-hidden")
-        return false
-    })
-})
+(function () {
+   let loginPage= new Vue({
+       el: '#cxxboy-login-page',
+       data:{
 
-$(function () {
-    particlesJS('cxxboy-canvas-bg',
+       },
+       mounted () {
+           //激活粒子效果
+           cxxboy_canvas_background('cxxboy-canvas-bg')
+       }
+   })
+})()
+
+//cxxboy_canvas_background
+//生成粒子背景
+function cxxboy_canvas_background(selector){
+    particlesJS(selector,
         {
             "particles": {
                 "number": {
@@ -130,7 +138,5 @@ $(function () {
                 "background_size": "cover"
             }
         }
-
     );
-    log($("#index-title").text())
-})
+}

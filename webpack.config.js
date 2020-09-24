@@ -139,7 +139,7 @@ module.exports = {
                 use: [{
                     loader: "url-loader", // or url-loader
                     options: {
-                        limit: 1024,
+                        limit: 20480,
                         name: "assets/image/[name].[hash:4].[ext]",
                         esModule: false,
                     }
