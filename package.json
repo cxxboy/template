@@ -48,6 +48,6 @@
   "dependencies": {
     "babel-runtime": "6.26.0",
     "jquery": "3.5.1",
-    "uikit": "3.5.7"
+    "@primer/css": "15.2.0"
   }
 }

@@ -1,8 +1,7 @@
 import {log} from "../../common/js/util"
 
-import "../../common/css/reset.css"
-import "uikit/dist/css/uikit.min.css"
-import "./index.css"
+import "../../common/css/reset.scss"
+import "./index.scss"
 
 import {sayHello} from './ad'
 
