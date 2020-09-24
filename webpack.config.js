@@ -8,7 +8,7 @@ const glob = require('glob'); // HTML生成插件
 
 // 设置html-webpack-plugin参数，返回参数对象
 let getHtmlConfig = function (name, chunks) {
-    var _template = `./src/pages/${name}/index.html`;
+    var _template = `./src/pages/${name}/index.ejs`;
     var _filename = `${name}/index.html`;
     //index单独处理
     if (name === "index") {
@@ -44,10 +44,10 @@ plugins.push(
         chunkFilename: 'assets/css/[id].[hash:4].css',
     }),
     // 自动加载类库
+    //webpack配置ProvidePlugin后，在使用时将不再需要import和require进行引入，直接使用即可。
     new webpack.ProvidePlugin({
-        $: 'jquery',
-        jQuery: 'jquery',
-
+       /* $: 'jquery',
+        jQuery: 'jquery',*/
     })
 )
 
@@ -135,23 +135,33 @@ module.exports = {
             // 图片内联与编码
             {
                 // 小于1KB的图片使用base64内联
-                test: /\.(png|jpg|gif|svg)$/,
-                loader: 'url-loader?limit=1024&name=assets/image/[name].[hash:4].[ext]' // 图片提取到images目录
+                test: /\.(png|jpg|etc|svg)$/,
+                use: [{
+                    loader: "url-loader", // or url-loader
+                    options: {
+                        limit: 1024,
+                        name: "assets/image/[name].[hash:4].[ext]",
+                        esModule: false,
+                    }
+                }],
                 // use: [
                 //     {
                 //       loader: 'url-loader',
                 //       options: {
                 //         limit: 1024,
-                //         name:"assets/image/[name].[hash:8].[ext]"
+                //         name:"assets/image/[name].[hash:4].[ext]"
                 //       }
                 //     }
                 //   ]
             },
             // 提取html中直接引用的本地文件
-            {
-                test: /\.html$/,
-                loader: 'html-loader'
-            }
+            /* {
+                 test: /\.html$/i,
+                 loader: 'html-loader',
+                 options: {
+                      minimize: process.env.NODE_ENV === "development" ? false : false, //是否压缩html
+               },
+          },*/
         ]
     },
     performance: {

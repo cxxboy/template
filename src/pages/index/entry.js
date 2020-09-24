@@ -5,7 +5,7 @@ import "./index.scss"
 
 import {sayHello} from './ad'
 
-$(document).ready(function() {
+$(document).ready(function () {
     log($("#index-title").text())
     log(sayHello('asd'))
 })

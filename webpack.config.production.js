@@ -19,17 +19,17 @@ const minimizer = [
 ]
 
 
-productionConfig.optimization.minimizer=minimizer;
+productionConfig.optimization.minimizer = minimizer;
 
 // 添加环境变量
 var definePlugin = new webpack.DefinePlugin({
-    'process.env':{
+    'process.env': {
         'NODE_ENV': JSON.stringify('production')
     }
 });
 productionConfig.plugins.push(definePlugin);
 
-// 配置CDN地址前缀, 例如: http://cdn.freshmoe.com/
+// 配置CDN地址前缀, 例如: http://cdn.cxxboy.com/
 productionConfig.output.publicPath = "";
 
 // 模块导出最终配置

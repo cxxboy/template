@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-   // "outDir": "./dist/",//告诉ts的编译器有 webpack output
+    // "outDir": "./dist/",//告诉ts的编译器有 webpack output
     "noImplicitAny": true,
     "module": "CommonJS",
     "target": "es5",
     "allowJs": true,
-    "sourceMap": true
+    "sourceMap": false
   }
 }
