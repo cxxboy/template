@@ -1,26 +1,12 @@
-import Vue from "vue/dist/vue.min";
 import {log} from "../../../common/js/util"
 import "particles.js/particles"
 
 import "../../../common/css/reset.scss"
 import "./index.scss"
 
-(function () {
-   let loginPage= new Vue({
-       el: '#cxxboy-login-page',
-       data:{
-
-       },
-       mounted () {
-           //激活粒子效果
-           cxxboy_canvas_background('cxxboy-canvas-bg')
-       },
-       methods:{
-
-       }
-   })
-})()
-
+$(function () {
+    cxxboy_canvas_background('cxxboy-canvas-bg');
+})
 //cxxboy_canvas_background
 //生成粒子背景
 function cxxboy_canvas_background(selector){
