@@ -26,10 +26,10 @@ let getHtmlConfig = function (name, chunks) {
       process.env.NODE_ENV === "development"
         ? false
         : {
-            removeComments: true, //移除HTML中的注释
-            collapseWhitespace: true, //折叠空白区域 也就是压缩代码
-            removeAttributeQuotes: true, //去除属性引用
-          },
+          removeComments: true, //移除HTML中的注释
+          collapseWhitespace: true, //折叠空白区域 也就是压缩代码
+          removeAttributeQuotes: true, //去除属性引用
+        },
   };
   return config;
 };
@@ -43,8 +43,8 @@ plugins.push(
   //css加载
   new MiniCssExtractPlugin({
     // 类似 webpackOptions.output里面的配置 可以忽略
-    filename: "assets/css/[name]-[hash:4].css",
-    chunkFilename: "assets/css/[id]-[hash:4].css",
+    filename: "assets/css/[name]-[fullhash:4].css",
+    chunkFilename: "assets/css/[id]-[fullhash:4].css",
   }),
   // 自动加载类库
   //webpack配置ProvidePlugin后，在使用时将不再需要import和require进行引入，直接使用即可。
@@ -90,7 +90,7 @@ module.exports = {
   stats: {
     // 关闭Entrypoint mini-css-extract-plugin = *提示
     entrypoints: false,
-    children: false,
+    children: true,
   },
   devtool:
     process.env.NODE_ENV === "development"
@@ -101,7 +101,7 @@ module.exports = {
   // 编译输出配置
   output: {
     path: path.resolve(__dirname, "dist"), // 保存路径
-    filename: "assets/js/[name]-[hash:4].js", // js文件名
+    filename: "assets/js/[name]-[fullhash:4].js", // js文件名
     publicPath: "/", //资源的基础路径，设置什么值就会在原来的路径前面加上这个值
   },
   plugins: plugins,
@@ -115,6 +115,15 @@ module.exports = {
         test: /\.ts?$/,
         use: "ts-loader",
         exclude: /node_modules/,
+      },
+      //ejs
+      {
+        test: /\.ejs$/,
+        loader: "ejs-loader",
+        options: {
+          esModule: false,
+          variable: "data"
+        }
       },
       // es6语法转换
       {
@@ -143,14 +152,14 @@ module.exports = {
       // 图片内联与编码
       {
         // 小于1KB的图片使用base64内联
-        test: /\.(png|jpg|webp)$/,
+        test: /\.(png|jpg|gif|webp)$/,
         use: [
           {
-            loader: "url-loader", // or url-loader
+            loader: "url-loader", // or file-loader
             options: {
-              limit: 20480,
+              limit: 8192,
               name: "assets/images/[name]-[hash:4].[ext]",
-              esModule: false,
+              esModule: false, // 这里设置为false,解决img的src为[object Module]
             },
           },
         ],
@@ -162,7 +171,7 @@ module.exports = {
           {
             loader: "file-loader", // or url-loader
             options: {
-              name: "assets/fonts/[name]-[hash:4].[ext]",
+              name: "assets/fonts/[name]-[fullhash:4].[ext]",
             },
           },
         ],

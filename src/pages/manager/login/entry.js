@@ -1,7 +1,7 @@
-import {log} from "../../../common/js/util"
+import { log } from "../../../assets/js/util"
 import "particles.js/particles"
 
-import "../../../common/css/reset.scss"
+import "../../../assets/css/reset.scss"
 import "./index.scss"
 
 $(function () {
@@ -9,7 +9,7 @@ $(function () {
 })
 //cxxboy_canvas_background
 //生成粒子背景
-function cxxboy_canvas_background(selector){
+function cxxboy_canvas_background(selector) {
     particlesJS(selector,
         {
             "particles": {

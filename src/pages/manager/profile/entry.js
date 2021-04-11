@@ -1,5 +1,5 @@
-import {log} from "../../../common/js/util"
+import { log } from "../../../assets/js/util"
 
-import "../../../common/css/reset.scss"
+import "../../../assets/css/reset.scss"
 import "./index.css"
 

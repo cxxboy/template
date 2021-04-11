@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%= require("html-loader!../../layout/manager/head-common.html") %>
+    <%= require("../../layout/manager/head-common.ejs")() %>
 </head>
+
 <body>
-<header class="uk-container">
-    <nav class="uk-container">
-        <a href="/about" class="uk-button">牛逼I</a>
-    </nav>
-</header>
+    <header class="uk-container">
+        <nav class="uk-container">
+            <a href="/about" class="uk-button">牛逼I</a>
+        </nav>
+    </header>
 
-<div class="Box">
-    This is a box.
-</div>
+    <div class="Box">
+        This is a box.
+    </div>
 
-<h1 id="index-title">首页 - </h1>
-<a href="/about.html" class=" uk-button">关于</a>
-<img src="<%= require("../../common/img/1.png") %>">
+    <h1 id="index-title">首页 - </h1>
+    <a href="/about.html" class=" uk-button">关于</a>
+    <img src="<%= require('../../assets/img/1.png') %>" />
 </body>
+
 </html>
